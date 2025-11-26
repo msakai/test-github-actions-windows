@@ -1,0 +1,26 @@
+on: push
+
+name: test
+jobs:
+  build:
+    name: test
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - shell: bash
+        run: |
+          which ucrtbase.dll
+          which VCRUNTIME140.dll
+          which ucrtbased.dll
+          which VCRUNTIME140d.dll
+          cp "$(which ucrtbased.dll)" ./
+          cp "$(which VCRUNTIME140d.dll)" ./
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-dlls
+          path: |
+            *.dll
